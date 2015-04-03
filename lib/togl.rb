@@ -8,4 +8,5 @@ module Togl
 end
 
 require "togl/feature"
+require "togl/util"
 require "togl/config"

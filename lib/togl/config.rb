@@ -1,9 +1,11 @@
 module Togl
   class Config
     include Attribs.new(:features, :strategies, :default_strategies)
+    attr_writer :default_strategies
 
-    def initialize(args = {})
+    def initialize(args = {}, &block)
       super({features: [], strategies: {}, default_strategies: []}.merge(args))
+      Builder.new(self, &block) if block_given?
     end
 
     def with_feature(name, opts = {})
@@ -30,12 +32,38 @@ module Togl
       end
     end
 
-    def strategy(name)
+    def fetch_strategy(name)
       strategies.fetch(name.to_sym)
     end
 
     def on?(name)
       fetch(name).on?
+    end
+
+    def rack_middleware
+      Rack::Middleware::Factory.new(self)
+    end
+
+    class Builder
+      def initialize(config, &block)
+        @config = config
+        instance_eval(&block)
+      end
+
+      def feature(name, opts = {})
+        @config.with_feature(name, opts)
+      end
+
+      def strategies(*names)
+        names.each do |name|
+          require "togl/strategy/#{name}"
+          @config.with_strategy(
+            name,
+            Togl::Strategy.const_get(Util.camelize(name.to_s)).new(@config)
+          )
+        end
+        @config.default_strategies = names.map(&:to_sym)
+      end
     end
   end
 end

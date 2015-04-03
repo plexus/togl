@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "attribs", "~> 1.0"
   spec.add_development_dependency "mutant-rspec"
   spec.add_development_dependency "bogus"
+  spec.add_development_dependency "rack"
 end

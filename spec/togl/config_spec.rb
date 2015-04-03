@@ -17,9 +17,9 @@ RSpec.describe Togl::Config do
         .to eql Togl::Feature.new(name: :wammie, config: config, strategies: [:redis, :rack])
     end
 
-    it "should take default strategies" do
+    it "should use default strategies if none given" do
       config.default_strategies.push(:rack)
-      config.with_feature(:lisa, strategies: [:rack])
+      config.with_feature(:lisa)
       expect(config.fetch(:lisa)).to eql Togl::Feature.new(name: :lisa, config: config, strategies: [:rack])
     end
   end
@@ -54,9 +54,9 @@ RSpec.describe Togl::Config do
     end
   end
 
-  describe "#strategy" do
+  describe "#fetch_strategy" do
     it "should return the strategy by name" do
-      expect(config.strategy("bar").call(1)).to equal :rasilt
+      expect(config.fetch_strategy("bar").call(1)).to equal :rasilt
     end
   end
 end
