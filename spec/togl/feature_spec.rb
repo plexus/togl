@@ -4,14 +4,14 @@ RSpec.describe Togl::Feature do
       name: name,
       config: config,
       default: default,
-      strategies: strategies
+      adapters: adapters
     )
   end
 
   let(:name) { :eric }
   let(:config) { Togl::Config.new }
   let(:default) { :off }
-  let(:strategies) { [] }
+  let(:adapters) { [] }
 
   describe "#on?" do
     it "should be disabled by default" do
@@ -19,43 +19,43 @@ RSpec.describe Togl::Feature do
     end
 
     context "when on by default" do
-      let(:strategies) { [:s1, :s2] }
+      let(:adapters) { [:s1, :s2] }
       let(:default) { :on }
 
       it "should be on if all strategues return nil" do
         config
-          .with_strategy(:s1, ->(name){ nil })
-          .with_strategy(:s2, ->(name){ nil })
+          .with_adapter(:s1, ->(name){ nil })
+          .with_adapter(:s2, ->(name){ nil })
         expect(feature.on?).to be true
       end
     end
 
-    context "with strategies" do
-      let(:strategies) { [:s1, :s2] }
+    context "with adapters" do
+      let(:adapters) { [:s1, :s2] }
 
-      it "should be on if the strategy returns true - skipping nils" do
+      it "should be on if the adapter returns true - skipping nils" do
         config
-          .with_strategy(:s1, ->(name){ nil })
-          .with_strategy(:s2, ->(name){ name == :eric })
+          .with_adapter(:s1, ->(name){ nil })
+          .with_adapter(:s2, ->(name){ name == :eric })
         expect(feature.on?).to be true
       end
 
-      it "should be off if the strategy returns false - skipping nils" do
+      it "should be off if the adapter returns false - skipping nils" do
         config
-          .with_strategy(:s1, ->(name){ nil })
-          .with_strategy(:s2, ->(name){ name != :eric })
+          .with_adapter(:s1, ->(name){ nil })
+          .with_adapter(:s2, ->(name){ name != :eric })
         expect(feature.on?).to be false
       end
 
-      it "should be on if the strategy returns true" do
+      it "should be on if the adapter returns true" do
         config
-          .with_strategy(:s1, ->(name){ name == :eric })
+          .with_adapter(:s1, ->(name){ name == :eric })
         expect(feature.on?).to be true
       end
 
-      it "should be off if the strategy returns false" do
+      it "should be off if the adapter returns false" do
         config
-          .with_strategy(:s1, ->(name){ name != :eric })
+          .with_adapter(:s1, ->(name){ name != :eric })
         expect(feature.on?).to be false
       end
     end

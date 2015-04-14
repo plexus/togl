@@ -1,9 +1,8 @@
 module Togl
   module Rack
     class Middleware
-      def initialize(app, togl)
+      def initialize(app)
         @app = app
-        @togl = togl
       end
 
       def call(env)
@@ -30,16 +29,6 @@ module Togl
 
       def feature_names(params, key)
         params.fetch(key, "").split(",").map(&:strip)
-      end
-
-      class Factory
-        def initialize(togl)
-          @togl = togl
-        end
-
-        def new(app)
-          Middleware.new(app, @togl)
-        end
       end
     end
   end

@@ -1,7 +1,7 @@
 RSpec.describe "high level usage examples" do
   let(:togl) do
     Togl::Config.new do
-      strategies :rack_session
+      adapters :rack_session
 
       feature :hero
       feature :frontend
@@ -13,6 +13,7 @@ RSpec.describe "high level usage examples" do
 
     app = ->(env) do
       called = true
+
       expect(togl.on? :hero).to be true
       expect(togl.on? :frontend).to be false
     end

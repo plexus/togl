@@ -1,13 +1,13 @@
 module Togl
   class Feature
-    include Attribs.new(:name, :config, default: :off, strategies: [])
+    include Attribs.new(:name, :config, default: :off, adapters: [])
 
     def on?
-      on = strategies.reduce(nil) do |memo, strategy|
+      on = adapters.reduce(nil) do |memo, adapter|
         if [true, false].include?(memo)
           memo
         else
-          strategy_on?(strategy)
+          adapter_on?(adapter)
         end
       end
       if on.nil?
@@ -17,8 +17,8 @@ module Togl
       end
     end
 
-    def strategy_on?(strategy)
-      config.fetch_strategy(strategy).call(name)
+    def adapter_on?(adapter)
+      config.fetch_adapter(adapter).call(name)
     end
   end
 end

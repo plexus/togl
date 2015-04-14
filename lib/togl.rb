@@ -1,5 +1,6 @@
 require "attribs"
 require "togl/version"
+require "rack/utils"
 
 module Togl
   def self.config
@@ -9,4 +10,8 @@ end
 
 require "togl/feature"
 require "togl/util"
+require "togl/adapter"
+require "togl/adapter/rack_session"
 require "togl/config"
+require "togl/config/builder"
+require "togl/rack/middleware"

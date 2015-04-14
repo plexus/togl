@@ -18,10 +18,11 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^spec/})
   spec.extra_rdoc_files = %w[README.md]
 
+  spec.add_runtime_dependency "rack"
+  spec.add_runtime_dependency "attribs", "~> 1.0"
+
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.1"
-  spec.add_development_dependency "attribs", "~> 1.0"
   spec.add_development_dependency "mutant-rspec"
   spec.add_development_dependency "bogus"
-  spec.add_development_dependency "rack"
 end
