@@ -40,6 +40,10 @@ module Togl
       fetch(name).on?
     end
 
+    def off?(name)
+      !on?(name)
+    end
+
     def rack_middleware
       Rack::Middleware
     end

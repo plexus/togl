@@ -11,6 +11,14 @@ module Togl
     Config::Builder.new(config, &block)
     config
   end
+
+  def on?(feature)
+    config.on?(feature)
+  end
+
+  def off?(feature)
+    config.on?(feature)
+  end
 end
 
 require "togl/feature"
