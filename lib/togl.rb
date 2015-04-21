@@ -6,6 +6,11 @@ module Togl
   def self.config
     @config ||= Config.new
   end
+
+  def self.configure(&block)
+    Config::Builder.new(config, &block)
+    config
+  end
 end
 
 require "togl/feature"

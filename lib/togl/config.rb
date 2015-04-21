@@ -8,7 +8,7 @@ module Togl
       Builder.new(self, &block) if block_given?
     end
 
-    def with_feature(name, opts = {})
+    def add_feature(name, opts = {})
       name = name.to_sym
       opts = {
         name: name,
@@ -19,7 +19,7 @@ module Togl
       self
     end
 
-    def with_adapter(name, callable)
+    def add_adapter(name, callable)
       name = name.to_sym
       adapters.merge!(name => callable)
       self
@@ -43,6 +43,5 @@ module Togl
     def rack_middleware
       Rack::Middleware
     end
-
   end
 end

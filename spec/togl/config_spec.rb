@@ -1,9 +1,9 @@
 RSpec.describe Togl::Config do
   let(:config) do
     described_class.new
-      .with_feature("foo")
-      .with_adapter("foo", ->(n){ :result })
-      .with_adapter("bar", ->(n){ :rasilt })
+      .add_feature("foo")
+      .add_adapter("foo", ->(n){ :result })
+      .add_adapter("bar", ->(n){ :rasilt })
   end
 
   describe "#initialize" do
@@ -28,20 +28,20 @@ RSpec.describe Togl::Config do
     end
   end
 
-  describe "#with_feature" do
+  describe "#add_feature" do
     it "should append a feature to the list" do
       expect(config.features).to eql [Togl::Feature.new(name: :foo, config: config)]
     end
 
     it "takes options" do
-      config.with_feature(:wammie, adapters: [:redis, :rack])
+      config.add_feature(:wammie, adapters: [:redis, :rack])
       expect(config.fetch(:wammie))
         .to eql Togl::Feature.new(name: :wammie, config: config, adapters: [:redis, :rack])
     end
 
     it "should use default adapters if none given" do
       config.default_adapters.push(:rack)
-      config.with_feature(:lisa)
+      config.add_feature(:lisa)
       expect(config.fetch(:lisa)).to eql Togl::Feature.new(name: :lisa, config: config, adapters: [:rack])
     end
   end
@@ -49,9 +49,9 @@ RSpec.describe Togl::Config do
   describe '#fetch' do
     let(:config) do
       described_class.new
-        .with_feature(:foo)
-        .with_feature("bar")
-        .with_feature(:baz)
+        .add_feature(:foo)
+        .add_feature("bar")
+        .add_feature(:baz)
     end
 
     it "should find a feature object by name" do
@@ -69,7 +69,7 @@ RSpec.describe Togl::Config do
     end
   end
 
-  describe "#with_adapter" do
+  describe "#add_adapter" do
 
     it "should store the adapter" do
       expect(config.adapters[:foo].call(:bar)).to equal :result

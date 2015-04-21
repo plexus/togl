@@ -24,8 +24,8 @@ RSpec.describe Togl::Feature do
 
       it "should be on if all strategues return nil" do
         config
-          .with_adapter(:s1, ->(name){ nil })
-          .with_adapter(:s2, ->(name){ nil })
+          .add_adapter(:s1, ->(name){ nil })
+          .add_adapter(:s2, ->(name){ nil })
         expect(feature.on?).to be true
       end
     end
@@ -35,27 +35,27 @@ RSpec.describe Togl::Feature do
 
       it "should be on if the adapter returns true - skipping nils" do
         config
-          .with_adapter(:s1, ->(name){ nil })
-          .with_adapter(:s2, ->(name){ name == :eric })
+          .add_adapter(:s1, ->(name){ nil })
+          .add_adapter(:s2, ->(name){ name == :eric })
         expect(feature.on?).to be true
       end
 
       it "should be off if the adapter returns false - skipping nils" do
         config
-          .with_adapter(:s1, ->(name){ nil })
-          .with_adapter(:s2, ->(name){ name != :eric })
+          .add_adapter(:s1, ->(name){ nil })
+          .add_adapter(:s2, ->(name){ name != :eric })
         expect(feature.on?).to be false
       end
 
       it "should be on if the adapter returns true" do
         config
-          .with_adapter(:s1, ->(name){ name == :eric })
+          .add_adapter(:s1, ->(name){ name == :eric })
         expect(feature.on?).to be true
       end
 
       it "should be off if the adapter returns false" do
         config
-          .with_adapter(:s1, ->(name){ name != :eric })
+          .add_adapter(:s1, ->(name){ name != :eric })
         expect(feature.on?).to be false
       end
     end

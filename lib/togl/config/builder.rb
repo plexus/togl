@@ -7,11 +7,11 @@ module Togl
       end
 
       def feature(name, opts = {})
-        @config.with_feature(name, opts)
+        @config.add_feature(name, opts)
       end
 
       def adapter(name, callable)
-        @config.with_adapter(name, callable)
+        @config.add_adapter(name, callable)
       end
 
       def adapters(*adapters)
