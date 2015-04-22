@@ -1,5 +1,7 @@
 # Togl
 
+<img align="left" src="logo.jpg">
+
 
 ## Installation
 
@@ -19,6 +21,24 @@ Or install it directly:
     $ gem install togl
 
 ## Usage
+
+First have a configuration file where you add features as you introduce them
+
+``` ruby
+Togl.configure do
+  feature :recommendations
+  feature :threaded_comments
+end
+```
+
+Now in your code you can check if a feature is on
+
+``` ruby
+if Togl.on? :recommendations
+  # ... implement the feature ...
+end
+```
+
 
 
 ## Contributing
