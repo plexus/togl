@@ -1,6 +1,8 @@
 module Togl
   module Rack
     class Middleware
+      SESSION_KEY = 'togl.features'
+
       def initialize(app)
         @app = app
       end
@@ -14,17 +16,17 @@ module Togl
       def detect_feature_params(env)
         params = ::Rack::Utils.parse_query(env["QUERY_STRING"])
         session = env["rack.session"]
-        session_features = session["features"] || {}
+        session[SESSION_KEY] ||= {}
         { ["enable_feature", "enable_features"]   => true,
           ["disable_feature", "disable_features"] => false,
           ["reset_feature", "reset_features"]     => nil }.each do |keys, flag|
           keys.each do |key|
             feature_names(params, key).each do |feature|
-              session_features[feature] = flag
+              session[SESSION_KEY][feature] = flag
             end
           end
         end
-        session_features
+        session[SESSION_KEY]
       end
 
       def feature_names(params, key)
