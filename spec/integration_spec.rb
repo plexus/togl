@@ -2,7 +2,7 @@ RSpec.describe "high level usage" do
   context "using the rack session" do
     let(:togl) do
       Togl::Config.new do
-        adapters :rack_session
+        use Togl::Adapter::RackSession.new
 
         feature :hero
         feature :frontend

@@ -1,9 +1,7 @@
 RSpec.describe Togl::Config do
   let(:config) do
     described_class.new
-      .add_feature("foo")
-      .add_adapter("foo", ->(n){ :result })
-      .add_adapter("bar", ->(n){ :rasilt })
+      .feature("foo")
   end
 
   describe "#initialize" do
@@ -23,7 +21,7 @@ RSpec.describe Togl::Config do
     it "should have defaults for its attributes" do
       config = described_class.new
       expect(config.features).to eql []
-      expect(config.adapters).to eql Togl::Adapter.all
+      expect(config.adapters).to eql({})
       expect(config.default_adapters).to eql []
     end
   end
@@ -34,24 +32,24 @@ RSpec.describe Togl::Config do
     end
 
     it "takes options" do
-      config.add_feature(:wammie, adapters: [:redis, :rack])
+      config.feature(:wammie, adapters: [:redis, :rack])
       expect(config.fetch(:wammie))
         .to eql Togl::Feature.new(name: :wammie, config: config, adapters: [:redis, :rack])
     end
 
-    it "should use default adapters if none given" do
-      config.default_adapters.push(:rack)
-      config.add_feature(:lisa)
-      expect(config.fetch(:lisa)).to eql Togl::Feature.new(name: :lisa, config: config, adapters: [:rack])
+    it "should use all adapters as default if not explicitly configured given" do
+      config.use Togl::Adapter::RackSession.new
+      config.feature(:lisa)
+      expect(config.fetch(:lisa)).to eql Togl::Feature.new(name: :lisa, config: config, adapters: [:rack_session])
     end
   end
 
   describe '#fetch' do
     let(:config) do
       described_class.new
-        .add_feature(:foo)
-        .add_feature("bar")
-        .add_feature(:baz)
+        .feature(:foo)
+        .feature("bar")
+        .feature(:baz)
     end
 
     it "should find a feature object by name" do
@@ -62,31 +60,15 @@ RSpec.describe Togl::Config do
   describe "#on?" do
     fake(:feature, name: :disrupt)
     it "should delegate to the feature" do
-      config = self.config.append_to(:features, feature)
+      config.features << feature
 
       config.on?("disrupt")
       expect(feature).to have_received.on?
     end
   end
 
-  describe "#add_adapter" do
-
-    it "should store the adapter" do
-      expect(config.adapters[:foo].call(:bar)).to equal :result
-    end
-  end
-
-  describe "#fetch_adapter" do
-    it "should return the adapter by name" do
-      expect(config.fetch_adapter("bar").call(1)).to equal :rasilt
-    end
-  end
-
   describe "rack_middleware" do
     it "should return a rack middleware builder" do
-      Togl::Config::Builder.new(config) do
-        adapters :rack_session
-      end
       expect(config.rack_middleware.new(->(env){})).to be_a Togl::Rack::Middleware
     end
   end

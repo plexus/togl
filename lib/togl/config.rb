@@ -1,14 +1,18 @@
 module Togl
   class Config
-    include Attribs.new(:features, :adapters, :default_adapters)
-    attr_writer :default_adapters
+    attr_accessor :features, :adapters, :default_adapters
 
     def initialize(args = {}, &block)
-      super({features: [], adapters: Adapter.all, default_adapters: []}.merge(args))
-      Builder.new(self, &block) if block_given?
+      @features = args.fetch(:features, [])
+      @adapters = args.fetch(:adapters, {})
+      @default_adapters = args[:default_adapters]
+
+      instance_eval(&block) if block_given?
     end
 
-    def add_feature(name, opts = {})
+    # Commands
+
+    def feature(name, opts = {})
       name = name.to_sym
       opts = {
         name: name,
@@ -19,10 +23,15 @@ module Togl
       self
     end
 
-    def add_adapter(name, callable)
-      name = name.to_sym
-      adapters.merge!(name => callable)
+    def use(adapter)
+      adapters[adapter.name] = adapter
       self
+    end
+
+    # Queries
+
+    def default_adapters
+      @default_adapters || adapters.keys
     end
 
     def fetch(name)

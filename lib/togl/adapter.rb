@@ -1,11 +1,9 @@
 module Togl
   class Adapter
-    def self.all
-      @all ||= {}
-    end
+    attr_reader :name
 
-    def self.register(name, callable)
-      Adapter.all[name] = callable
+    def initialize(name)
+      @name = name.to_sym
     end
   end
 end

@@ -8,8 +8,7 @@ module Togl
   end
 
   def self.configure(&block)
-    Config::Builder.new(config, &block)
-    config
+    Config.new(config, &block)
   end
 
   def on?(feature)
@@ -26,5 +25,4 @@ require "togl/util"
 require "togl/adapter"
 require "togl/adapter/rack_session"
 require "togl/config"
-require "togl/config/builder"
 require "togl/rack/middleware"

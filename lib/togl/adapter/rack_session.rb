@@ -1,9 +1,11 @@
 module Togl
   class Adapter
     class RackSession < self
-      register :rack_session, self
+      def initialize
+        super(:rack_session)
+      end
 
-      def self.call(name)
+      def call(name)
         Thread.current[:togl_session_features][name.to_s]
       end
     end
