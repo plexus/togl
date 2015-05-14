@@ -53,8 +53,5 @@ module Togl
       !on?(name)
     end
 
-    def rack_middleware
-      Rack::Middleware
-    end
   end
 end

@@ -8,14 +8,15 @@ module Togl
   end
 
   def self.configure(&block)
-    Config.new(config, &block)
+    @config ||= Config.new
+    @config.instance_eval(&block)
   end
 
-  def on?(feature)
+  def self.on?(feature)
     config.on?(feature)
   end
 
-  def off?(feature)
+  def self.off?(feature)
     config.on?(feature)
   end
 end

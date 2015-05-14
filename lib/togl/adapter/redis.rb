@@ -30,7 +30,7 @@ module Togl
 
       attr_writer :current_redis
       def current_redis
-        @current_redis || Redis.current
+        @current_redis || ::Redis.current
       end
     end
   end
