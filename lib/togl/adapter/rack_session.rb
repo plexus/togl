@@ -6,7 +6,8 @@ module Togl
       end
 
       def call(name)
-        Thread.current[:togl_session_features][name.to_s]
+        features = Thread.current[:togl_session_features]
+        features && features[name.to_s]
       end
     end
   end

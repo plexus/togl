@@ -19,7 +19,7 @@ RSpec.describe "high level usage" do
         expect(togl.on? :frontend).to be false
       end
 
-      app = togl.rack_middleware.new(app)
+      app = Togl::Rack::Middleware.new(app)
       env = {
         "rack.session" => {},
         "QUERY_STRING" => "enable_feature=hero"

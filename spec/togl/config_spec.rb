@@ -67,9 +67,4 @@ RSpec.describe Togl::Config do
     end
   end
 
-  describe "rack_middleware" do
-    it "should return a rack middleware builder" do
-      expect(config.rack_middleware.new(->(env){})).to be_a Togl::Rack::Middleware
-    end
-  end
 end
