@@ -5,9 +5,8 @@ script: bundle exec rake $TASK
 sudo: false
 
 rvm:
-  - 2.0
-  - 2.1
-  - 2.2
+  - 2.2.2
+  - 2.3
   - jruby
   - jruby-head
   - ruby-head
@@ -25,9 +24,7 @@ matrix:
 
   # Only run mutant on 2.2
   exclude:
-    - rvm: 2.0
-      env: TASK=mutant
-    - rvm: 2.1
+    - rvm: 2.2.2
       env: TASK=mutant
     - rvm: jruby
       env: TASK=mutant
