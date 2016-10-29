@@ -17,7 +17,7 @@ module Togl
   end
 
   def self.off?(feature)
-    config.on?(feature)
+    config.off?(feature)
   end
 end
 
