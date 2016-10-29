@@ -38,6 +38,10 @@ module Togl
       name = name.to_sym
       features.detect do |feature|
         feature.name.equal?(name)
+      end.tap do |feature|
+        if feature.nil?
+          raise InvalidFeatureName, "No such configured feature: `#{name}'"
+        end
       end
     end
 

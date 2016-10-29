@@ -9,8 +9,9 @@ module Togl
 
       def call(env)
         Thread.current[:togl_session_features] = detect_feature_params(env)
-        @app.call(env)
-        Thread.current[:togl_session_features] = nil
+        @app.call(env).tap do
+          Thread.current[:togl_session_features] = nil
+        end
       end
 
       def detect_feature_params(env)

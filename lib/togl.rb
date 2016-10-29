@@ -3,6 +3,8 @@ require "togl/version"
 require "rack/utils"
 
 module Togl
+  InvalidFeatureName = Class.new(StandardError)
+
   def self.config
     @config ||= Config.new
   end
@@ -17,7 +19,7 @@ module Togl
   end
 
   def self.off?(feature)
-    config.on?(feature)
+    config.off?(feature)
   end
 end
 
